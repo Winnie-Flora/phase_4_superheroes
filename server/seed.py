@@ -1,5 +1,6 @@
 from random import choice as rc
-from app import app, db  # Make sure you import both the app and db
+from app import app
+from models import db
 from models.heroes import Hero
 from models.powers import Power
 from models.hero_powers import HeroPower

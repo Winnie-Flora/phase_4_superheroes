@@ -1,15 +1,17 @@
 from . import db
 from sqlalchemy.orm import validates
+from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.ext.associationproxy import association_proxy
 
-class Power(db.Model):
+class Power(db.Model, SerializerMixin):
     __tablename__ = 'powers'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
 
-    hero_powers = db.relationship('HeroPower', back_populates='power', cascade="all, delete-orphan", overlaps="heroes")
-    heroes = db.relationship('Hero', secondary='hero_powers', back_populates='powers', overlaps="hero_powers")
+    hero_powers = db.relationship('HeroPower', back_populates='power', cascade="all, delete-orphan")
+    heroes = association_proxy("hero_powers", "hero")
 
     @validates('description')
     def validate_description(self, key, value):
@@ -17,9 +19,4 @@ class Power(db.Model):
             raise ValueError("Description must be at least 20 characters long.")
         return value
 
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description,
-        }
+
