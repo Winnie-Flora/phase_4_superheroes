@@ -8,7 +8,7 @@ class Hero(db.Model):
     super_name = db.Column(db.String, nullable=False)
 
     hero_powers = db.relationship('HeroPower', back_populates='hero', cascade="all, delete-orphan")
-    powers = db.relationship('Power', secondary='hero_powers', back_populates='heroes')
+    powers = db.relationship('Power', secondary='hero_powers', back_populates='heroes', overlaps="hero_powers")
 
     def serialize(self):
         return {

@@ -8,8 +8,8 @@ class Power(db.Model):
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
 
-    hero_powers = db.relationship('HeroPower', back_populates='power', cascade="all, delete-orphan")
-    heroes = db.relationship('Hero', secondary='hero_powers', back_populates='powers')
+    hero_powers = db.relationship('HeroPower', back_populates='power', cascade="all, delete-orphan", overlaps="heroes")
+    heroes = db.relationship('Hero', secondary='hero_powers', back_populates='powers', overlaps="hero_powers")
 
     @validates('description')
     def validate_description(self, key, value):

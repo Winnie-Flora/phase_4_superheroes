@@ -1,12 +1,11 @@
 from random import choice as rc
-from app import app
-from models import db
+from app import app, db  # Make sure you import both the app and db
 from models.heroes import Hero
 from models.powers import Power
 from models.hero_powers import HeroPower
 
 if __name__ == '__main__':
-    with app.app_context():
+    with app.app_context():  # Make sure the app context is provided here
         print("Clearing db...")
         Power.query.delete()
         Hero.query.delete()
@@ -48,5 +47,5 @@ if __name__ == '__main__':
 
         db.session.add_all(hero_powers)
         db.session.commit()
-        
+
         print("Done seeding!")

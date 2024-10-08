@@ -9,8 +9,8 @@ class HeroPower(db.Model):
     power_id = db.Column(db.Integer, db.ForeignKey('powers.id', ondelete='CASCADE'), nullable=False)
     strength = db.Column(db.String, nullable=False)
 
-    hero = db.relationship('Hero', back_populates='hero_powers')
-    power = db.relationship('Power', back_populates='hero_powers')
+    hero = db.relationship('Hero', back_populates='hero_powers', overlaps="powers")
+    power = db.relationship('Power', back_populates='hero_powers', overlaps="heroes")
 
     @validates('strength')
     def validate_strength(self, key, value):
