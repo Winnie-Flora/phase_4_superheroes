@@ -18,6 +18,7 @@ Migrate(app, db)
 def home():
     return 'Superheroes Data'
 
+# Get all heroes
 @app.route('/heroes')
 def heroes():
 
@@ -37,7 +38,7 @@ def heroes():
 
     return response
 
-
+# Get heroes by id
 @app.route('/heroes/<int:id>', methods=['GET'])
 def hero_by_id(id):
 
@@ -80,7 +81,67 @@ def hero_by_id(id):
     # Return the serialized hero data as JSON
     #return jsonify(hero_data), 200
 
+# Get all powers
+@app.route('/powers')
+def powers():
 
+    powers = []
+
+    for power in Power.query.all():
+        power_dict = {
+          "description": power.description,  
+          "id": power.id,
+          "name": power.name,
+        }
+        powers.append(power_dict)
+
+    response = make_response(
+        jsonify(powers),
+        200
+    )
+
+    return response
+
+# Get powers by id
+@app.route('/powers/<int:id>', methods=['GET'])
+def power_by_id(id):
+
+    power=Power.query.get(id)
+
+    if not power:
+        return jsonify({"error": "Power not found"}), 404
+    
+    power_data={
+        "description": power.description,  
+        "id": power.id,
+        "name": power.name,
+    }
+
+    response = make_response(
+        jsonify(power_data),
+        200
+    )
+
+    return response
+
+# Update powers by id
+# @app.route('/powers/<int:id>', methods=['PATCH'])
+# def add_power():
+
+    # for attr in request.form:
+    #     setattr(power, attr, request.form.get(attr))
+
+    #     db.session.add(power)
+    #     db.session.commit()
+
+    #     power_dict = power.to_dict()
+
+    #     response = make_response(
+    #         power_dict,
+    #         200
+    #     )
+
+    #     return response 
 
 # Run the application
 if __name__ == '__main__':
