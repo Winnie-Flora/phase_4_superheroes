@@ -28,7 +28,6 @@ def heroes():
     ]
 
     response = make_response(jsonify(hero_dict_list), 200)
-
     return response
 
 
@@ -46,25 +45,17 @@ def hero_by_id(id):
     hero_dict = hero.to_dict()
 
     response = make_response(jsonify(hero_dict), 200)
-
     return response
+
 
 # Get all powers
 @app.route('/powers')
 def powers():
+    power_list = Power.query.all()
 
-    powers = []
+    power_dict_list = [power.to_dict(rules=('-hero_powers',)) for power in power_list]
 
-    for power in Power.query.all():
-        power_dict = {
-            "description": power.description,
-            "id": power.id,
-            "name": power.name,
-        }
-        powers.append(power_dict)
-
-    response = make_response(jsonify(powers), 200)
-
+    response = make_response(jsonify(power_dict_list), 200)
     return response
 
 
