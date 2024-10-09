@@ -62,35 +62,28 @@ def powers():
 
 
 # Get powers by id
-@app.route('/powers/<int:id>', methods=['GET'])
+@app.route('/powers/<int:id>', methods=['GET', 'PATCH'])
 def power_by_id(id):
-
     power = Power.query.get(id)
-
     if not power:
         return jsonify({"error": "Power not found"}), 404
 
-    power_dict = power.to_dict(rules=('-hero_powers',))
+    if request.method == 'GET':
+        power_dict = power.to_dict(rules=('-hero_powers', ))
 
-    response = make_response(jsonify(power_dict), 200)
-
-    return response
-
-
-# Update powers by id
-@app.route('/powers/<int:id>', methods=['PATCH'])
-def add_power():
-
-    for attr in request.form:
-        setattr(power, attr, request.form.get(attr))
+        response = make_response(jsonify(power_dict), 200)
+        return response
+    if request.method == 'PATCH':
+        data = request.json
+        for attr in data:
+            setattr(power, attr, data[attr])
 
         db.session.add(power)
         db.session.commit()
 
-        power_dict = power.to_dict()
+        power_dict = power.to_dict(rules=('-hero_powers',))
 
-        response = make_response(power_dict, 200)
-
+        response = make_response(jsonify(power_dict), 200)
         return response
 
 
