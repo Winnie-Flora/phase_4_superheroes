@@ -21,18 +21,11 @@ def home():
 # Get all heroes
 @app.route('/heroes')
 def heroes():
-
-    heroes = []
-    for hero in Hero.query.all():
-        hero_dict = {
-          "id": hero.id,
-          "name": hero.name,
-          "super_name": hero.super_name  
-        }
-        heroes.append(hero_dict)
+    hero_list = Hero.query.all()
+    hero_dict_list = [hero.to_dict(rules=('-hero_powers',)) for hero in hero_list]
 
     response = make_response(
-        jsonify(heroes),
+        jsonify(hero_dict_list),
         200
     )
 
@@ -78,8 +71,7 @@ def hero_by_id(id):
 
     return response
 
-    # Return the serialized hero data as JSON
-    #return jsonify(hero_data), 200
+
 
 # Get all powers
 @app.route('/powers')
@@ -125,24 +117,24 @@ def power_by_id(id):
     return response
 
 # Update powers by id
-# @app.route('/powers/<int:id>', methods=['PATCH'])
-# def add_power():
+@app.route('/powers/<int:id>', methods=['PATCH'])
+def add_power():
 
-    # for attr in request.form:
-    #     setattr(power, attr, request.form.get(attr))
+    for attr in request.form:
+        setattr(power, attr, request.form.get(attr))
 
-    #     db.session.add(power)
-    #     db.session.commit()
+        db.session.add(power)
+        db.session.commit()
 
-    #     power_dict = power.to_dict()
+        power_dict = power.to_dict()
 
-    #     response = make_response(
-    #         power_dict,
-    #         200
-    #     )
+        response = make_response(
+            power_dict,
+            200
+        )
 
-    #     return response 
+        return response 
 
 # Run the application
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5555)
