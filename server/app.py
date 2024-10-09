@@ -90,6 +90,23 @@ def power_by_id(id):
             return jsonify({'errror': ['Validation errors']})
 
 
+@app.route('/hero_powers', methods=['POST'])
+def hero_powers():
+    data = request.json
+
+    try:
+        new_hero_power = HeroPower(strength=data['strength'],
+                                   power_id=data['power_id'],
+                                   hero_id=data['hero_id'])
+        db.session.add(new_hero_power)
+        db.session.commit()
+        new_hero_power_dict = new_hero_power.to_dict()
+        response = make_response(jsonify(new_hero_power_dict), 201)
+        return response
+    except:
+        return jsonify({'errors': ['Validation errors']})
+
+
 # Run the application
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
