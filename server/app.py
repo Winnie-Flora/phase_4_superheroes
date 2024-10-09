@@ -53,7 +53,9 @@ def hero_by_id(id):
 def powers():
     power_list = Power.query.all()
 
-    power_dict_list = [power.to_dict(rules=('-hero_powers',)) for power in power_list]
+    power_dict_list = [
+        power.to_dict(rules=('-hero_powers', )) for power in power_list
+    ]
 
     response = make_response(jsonify(power_dict_list), 200)
     return response
@@ -68,13 +70,9 @@ def power_by_id(id):
     if not power:
         return jsonify({"error": "Power not found"}), 404
 
-    power_data = {
-        "description": power.description,
-        "id": power.id,
-        "name": power.name,
-    }
+    power_dict = power.to_dict(rules=('-hero_powers',))
 
-    response = make_response(jsonify(power_data), 200)
+    response = make_response(jsonify(power_dict), 200)
 
     return response
 
