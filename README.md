@@ -2,13 +2,13 @@
 This Flask-based web application helps us manage superheroes data. It features an interface that retrieves, updates, and creates superheroes details.
 
 ## Features
-. Get heroes and powers: You can get a list of heroes or powers.
-. Update powers: You can change the existing powers using PATCH request
-. Create relationships: You can create hero-power relationship by assigning powers to heroes.
+- Get heroes and powers: You can get a list of heroes or powers.
+- Update powers: You can change the existing powers using PATCH request
+- Create relationships: You can create hero-power relationship by assigning powers to heroes.
 
 ## Prerequisites
-. Install python 3.10 or higher
-. For dependency management run:
+- Install python 3.10 or higher
+- For dependency management run:
   pip install pipenv
 
 ## Installation
@@ -25,20 +25,20 @@ pipenv install
 1. Start virtual environment run:
 pipenv shell
 
-2. To run Falsk app:
+2. To run Flask app:
 cd server
 python app.py
 
 ## To Run Migrations:
-. Create a migration using:
+1. Create a migration using:
 flask db migrate -m "message"
-. Apply migrations:
+2. Apply migrations:
 flask db upgrade
 
 ## Seed Data
 To populate the database run:
-cd server
-python seed.py
+1. cd server
+2. python seed.py
 
 ## API Endpoints
 1. GET /heroes
