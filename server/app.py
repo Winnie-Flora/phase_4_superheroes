@@ -74,17 +74,20 @@ def power_by_id(id):
         response = make_response(jsonify(power_dict), 200)
         return response
     if request.method == 'PATCH':
-        data = request.json
-        for attr in data:
-            setattr(power, attr, data[attr])
+        try:
+            data = request.json
+            for attr in data:
+                setattr(power, attr, data[attr])
 
-        db.session.add(power)
-        db.session.commit()
+            db.session.add(power)
+            db.session.commit()
 
-        power_dict = power.to_dict(rules=('-hero_powers',))
+            power_dict = power.to_dict(rules=('-hero_powers', ))
 
-        response = make_response(jsonify(power_dict), 200)
-        return response
+            response = make_response(jsonify(power_dict), 200)
+            return response
+        except:
+            return jsonify({'errror': ['Validation errors']})
 
 
 # Run the application
