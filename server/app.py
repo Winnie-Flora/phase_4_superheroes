@@ -7,7 +7,7 @@ from models import db, Hero, HeroPower, Power
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.json.compact = False
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # Initialize SQLAlchemy and Flask-Migrate
 db.init_app(app)
@@ -104,7 +104,7 @@ def hero_powers():
         response = make_response(jsonify(new_hero_power_dict), 201)
         return response
     except:
-        return jsonify({'errors': ['Validation errors']})
+        return jsonify({'errors': ['Validation errors']}), 400
 
 
 # Run the application
