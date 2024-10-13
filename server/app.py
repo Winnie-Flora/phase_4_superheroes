@@ -86,8 +86,8 @@ def power_by_id(id):
 
             response = make_response(jsonify(power_dict), 200)
             return response
-        except:
-            return jsonify({'errror': ['Validation errors']})
+        except ValueError as e:
+            return jsonify({'errors': [str(e)]})
 
 
 @app.route('/hero_powers', methods=['POST'])
