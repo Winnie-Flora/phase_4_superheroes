@@ -95,6 +95,15 @@ def hero_powers():
     data = request.json
     errors = []
     try:
+        # Validate hero_id and power_id
+        hero = Hero.query.get(data['hero_id'])
+        power = Power.query.get(data['power_id'])
+
+        if hero is None:
+            raise ValueError(f'Invalid value for hero_id')
+        if power is None:
+            raise ValueError('Invalid value for power_id')
+
         new_hero_power = HeroPower(strength=data['strength'],
                                    power_id=data['power_id'],
                                    hero_id=data['hero_id'])
