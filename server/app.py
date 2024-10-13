@@ -93,7 +93,7 @@ def power_by_id(id):
 @app.route('/hero_powers', methods=['POST'])
 def hero_powers():
     data = request.json
-
+    errors = []
     try:
         new_hero_power = HeroPower(strength=data['strength'],
                                    power_id=data['power_id'],
@@ -103,8 +103,11 @@ def hero_powers():
         new_hero_power_dict = new_hero_power.to_dict()
         response = make_response(jsonify(new_hero_power_dict), 201)
         return response
-    except:
-        return jsonify({'errors': ['Validation errors']}), 400
+    except KeyError as e:
+        errors.append(f'Missing required field: {str(e)}')
+    except ValueError as e:
+        errors.append(str(e))
+    return jsonify({'errors': errors}), 400
 
 
 # Run the application
