@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, make_response, request
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from flask_migrate import Migrate
 from models import db, Hero, HeroPower, Power
 
@@ -107,6 +107,9 @@ def hero_powers():
         errors.append(f'Missing required field: {str(e)}')
     except ValueError as e:
         errors.append(str(e))
+    except IntegrityError as e:
+        if 'UNIQUE' in str(e):
+            errors.append('Duplicate hero_power.')
     return jsonify({'errors': errors}), 400
 
 
